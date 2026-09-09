@@ -1,27 +1,27 @@
-#include <stddef.h>
 #include "orion_browser.h"
-#include "net.h"
+#include "orion_vela_bridge.h"
 
-static char g_url[160];
-static int g_url_len;
-static char g_status[96];
-static char g_page[4096];
-
-static void copy(char *dst,size_t cap,const char *src){size_t i=0;if(!cap)return;while(src&&src[i]&&i+1<cap){dst[i]=src[i];i++;}dst[i]=0;}
+static int g_compatible;
 
 void orion_browser_init(void){
-    g_url[0]=0;g_url_len=0;
-    copy(g_status,sizeof(g_status),"Ready / lightweight HTTP fallback");
-    copy(g_page,sizeof(g_page),"Orion Browser\n\nLightweight recovery browser for UN_Orion.\nUse UN_Vela for Aster-rendered pages.");
+    vela_init(480);
+    g_compatible=orion_vela_api_compatible(vela_api_version());
+    if(g_compatible)vela_set_features(ORION_VELA_PROFILE_LITE);
 }
-void orion_browser_input_char(char c){if(g_url_len<(int)sizeof(g_url)-1){g_url[g_url_len++]=c;g_url[g_url_len]=0;}}
-void orion_browser_backspace(void){if(g_url_len)g_url[--g_url_len]=0;}
-int orion_browser_load_url(const char *url){
-    if(!url||!*url){copy(g_status,sizeof(g_status),"Enter an HTTP address");return 0;}
-    copy(g_status,sizeof(g_status),"Loading...");
-    return net_http_get(url,g_page,sizeof(g_page),g_status,sizeof(g_status));
-}
-int orion_browser_go(void){return orion_browser_load_url(g_url);}
-const char *orion_browser_url(void){return g_url;}
-const char *orion_browser_status(void){return g_status;}
-const char *orion_browser_page(void){return g_page;}
+int orion_browser_compatible(void){return g_compatible;}
+void orion_browser_set_viewport(int w,int h){if(g_compatible)vela_set_viewport_size(w,h);}
+void orion_browser_input_char(char c){if(g_compatible)vela_input_char(c);}
+void orion_browser_backspace(void){if(g_compatible)vela_backspace();}
+int orion_browser_go(void){return g_compatible?vela_go():0;}
+int orion_browser_load_url(const char *url){return g_compatible?vela_load_url(url):0;}
+int orion_browser_back(void){return g_compatible?vela_back():0;}
+int orion_browser_forward(void){return g_compatible?vela_forward():0;}
+int orion_browser_reload(void){return g_compatible?vela_reload():0;}
+int orion_browser_can_back(void){return g_compatible?vela_can_back():0;}
+int orion_browser_can_forward(void){return g_compatible?vela_can_forward():0;}
+void orion_browser_scroll_by(int d){if(g_compatible)vela_scroll_by(d);}
+int orion_browser_scroll(void){return g_compatible?vela_scroll():0;}
+const char *orion_browser_url(void){return g_compatible?vela_url():"";}
+const char *orion_browser_status(void){return g_compatible?vela_status():"UN_Vela 0.3 API unavailable";}
+const char *orion_browser_title(void){return g_compatible?vela_title():ORION_BROWSER_NAME;}
+const char *orion_browser_page(void){return orion_browser_title();}
