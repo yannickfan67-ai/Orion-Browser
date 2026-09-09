@@ -1,12 +1,14 @@
-# Orion-Browser roadmap
+# Orion Browser Roadmap
 
-Orion-Browser is intentionally the small recovery browser, not a second UN_Vela.
+## 0.2 — shared Vela/Aster recovery shell
+- use UN_Vela 0.3 API instead of a separate HTTP/text engine
+- select `VELA_PROFILE_LITE` so JavaScript stays disabled
+- share HTML/CSS/layout/history/scroll behavior with the full browser
+- retain a tiny shell ABI for rescue environments
+- validate Vela API compatibility before forwarding calls
 
-- stay independent from Aster Engine
-- HTTP/plain-text pages first
-- tiny memory footprint and minimal allocations
-- direct status/error pages for network recovery
-- simple URL entry, redirects and downloads
-- optional source/raw view
-- usable when UN_Vela/Aster fails to initialize
-- no CSS/JavaScript target; advanced browsing belongs to UN_Vela
+## Next
+- expose an optional compact painter/control surface for rescue UI
+- define explicit memory ceilings for low-RAM targets
+- add host capability reporting for HTTP/TLS/resources
+- add recovery-focused keyboard navigation
