@@ -4,7 +4,19 @@
 #include <stdint.h>
 
 #define ORION_BROWSER_NAME "Orion Browser"
-#define ORION_BROWSER_VERSION "0.2.0"
+#define ORION_BROWSER_VERSION "0.2.1"
+
+typedef enum OrionBrowserAction {
+    ORION_BROWSER_BACK=1,
+    ORION_BROWSER_FORWARD,
+    ORION_BROWSER_RELOAD,
+    ORION_BROWSER_LINE_UP,
+    ORION_BROWSER_LINE_DOWN,
+    ORION_BROWSER_PAGE_UP,
+    ORION_BROWSER_PAGE_DOWN,
+    ORION_BROWSER_HOME,
+    ORION_BROWSER_END
+} OrionBrowserAction;
 
 /*
  * Lightweight recovery shell over the shared UN_Vela/Aster runtime.
@@ -23,6 +35,7 @@ int orion_browser_forward(void);
 int orion_browser_reload(void);
 int orion_browser_can_back(void);
 int orion_browser_can_forward(void);
+int orion_browser_navigate(OrionBrowserAction action);
 void orion_browser_scroll_by(int delta_y);
 int orion_browser_scroll(void);
 const char *orion_browser_url(void);
