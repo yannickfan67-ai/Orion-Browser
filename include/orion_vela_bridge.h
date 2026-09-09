@@ -4,8 +4,20 @@
 #include <stdint.h>
 
 #define ORION_VELA_REQUIRED_API_MAJOR 1u
-#define ORION_VELA_REQUIRED_API_MINOR 2u
+#define ORION_VELA_REQUIRED_API_MINOR 4u
 #define ORION_VELA_PROFILE_LITE 0u
+
+typedef enum VelaNavAction {
+    VELA_NAV_BACK=1,
+    VELA_NAV_FORWARD,
+    VELA_NAV_RELOAD,
+    VELA_NAV_LINE_UP,
+    VELA_NAV_LINE_DOWN,
+    VELA_NAV_PAGE_UP,
+    VELA_NAV_PAGE_DOWN,
+    VELA_NAV_HOME,
+    VELA_NAV_END
+} VelaNavAction;
 
 void vela_init(int viewport_width);
 uint32_t vela_api_version(void);
@@ -20,6 +32,7 @@ int vela_forward(void);
 int vela_reload(void);
 int vela_can_back(void);
 int vela_can_forward(void);
+int vela_navigate_action(VelaNavAction action);
 void vela_scroll_by(int delta_y);
 int vela_scroll(void);
 const char *vela_url(void);
